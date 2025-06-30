@@ -1,0 +1,15 @@
+E:\Projects\github\ToDoList\src\ToDoList.Domain\bin\Debug\net8.0\ToDoList.Domain.deps.json
+E:\Projects\github\ToDoList\src\ToDoList.Domain\bin\Debug\net8.0\ToDoList.Domain.dll
+E:\Projects\github\ToDoList\src\ToDoList.Domain\bin\Debug\net8.0\ToDoList.Domain.pdb
+E:\Projects\github\ToDoList\src\ToDoList.Domain\bin\Debug\net8.0\ToDoList.Application.dll
+E:\Projects\github\ToDoList\src\ToDoList.Domain\bin\Debug\net8.0\ToDoList.Application.pdb
+E:\Projects\github\ToDoList\src\ToDoList.Domain\obj\Debug\net8.0\ToDoList.Domain.csproj.AssemblyReference.cache
+E:\Projects\github\ToDoList\src\ToDoList.Domain\obj\Debug\net8.0\ToDoList.Domain.GeneratedMSBuildEditorConfig.editorconfig
+E:\Projects\github\ToDoList\src\ToDoList.Domain\obj\Debug\net8.0\ToDoList.Domain.AssemblyInfoInputs.cache
+E:\Projects\github\ToDoList\src\ToDoList.Domain\obj\Debug\net8.0\ToDoList.Domain.AssemblyInfo.cs
+E:\Projects\github\ToDoList\src\ToDoList.Domain\obj\Debug\net8.0\ToDoList.Domain.csproj.CoreCompileInputs.cache
+E:\Projects\github\ToDoList\src\ToDoList.Domain\obj\Debug\net8.0\ToDoList.450938EA.Up2Date
+E:\Projects\github\ToDoList\src\ToDoList.Domain\obj\Debug\net8.0\ToDoList.Domain.dll
+E:\Projects\github\ToDoList\src\ToDoList.Domain\obj\Debug\net8.0\refint\ToDoList.Domain.dll
+E:\Projects\github\ToDoList\src\ToDoList.Domain\obj\Debug\net8.0\ToDoList.Domain.pdb
+E:\Projects\github\ToDoList\src\ToDoList.Domain\obj\Debug\net8.0\ref\ToDoList.Domain.dll
