@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using ToDoList.Infra.Contexts;
 
 namespace ToDoList.Infra.Repositories
@@ -14,9 +15,19 @@ namespace ToDoList.Infra.Repositories
             _dbSet = _context.Set<T>() ?? throw new InvalidOperationException($"Could not set DbSet for type {typeof(T).Name}");
         }
 
+        public IQueryable<T> GetQueryable()
+        {
+            return _dbSet.AsQueryable();
+        }
+
         public async Task<T> GetByIdAsync(Guid id)
         {
             return await _dbSet.FindAsync(id) ?? throw new KeyNotFoundException($"Entity with id {id} not found.");
+        }
+
+        public async Task<IEnumerable<T>> GetAllByFilterParams(Expression<Func<T, bool>> filterParams)
+        {
+            return await _dbSet.Where(filterParams).ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()

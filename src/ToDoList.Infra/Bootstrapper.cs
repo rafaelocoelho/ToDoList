@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ToDoList.Infra.Contexts;
 using SQLitePCL;
+using ToDoList.Infra.Contexts;
+using ToDoList.Infra.Repositories;
+using ToDoList.Infra.UnitOfWork;
 
 namespace ToDoList.Infra
 {
@@ -16,6 +18,14 @@ namespace ToDoList.Infra
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection"),
                     assembly => assembly.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+
+            services.AddRepositories();
+        }
+
+        private static void AddRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddScoped<IUnitOfWork, Infra.UnitOfWork.UnitOfWork>();
         }
     }
 }

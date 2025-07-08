@@ -1,4 +1,6 @@
 ﻿
+using System.Linq.Expressions;
+
 namespace ToDoList.Infra.Repositories
 {
     public interface ITaskRepository : IRepository<Domain.Entities.Task>

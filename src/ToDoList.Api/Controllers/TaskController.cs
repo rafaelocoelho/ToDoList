@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ToDoList.Api.ViewModels;
+using ToDoList.Api.Utilities;
 using ToDoList.Core;
-using ToDoList.Core.Services.Interfaces;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ToDoList.Api.Controllers
 {
@@ -17,84 +14,162 @@ namespace ToDoList.Api.Controllers
             _taskService = taskService;
         }
 
+        [HttpGet("Id")]
+        [ProducesResponseType(typeof(ResultViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultViewModel), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> GetByIdAsync(Guid Id)
+        {
+            try
+            {
+                var task = await _taskService.GetTaskById(Id);
+                if (task is null)
+                    return Ok(new ResultViewModel("Nenhuma tarefa foi encontrada!", false, null));
+                return Ok(new ResultViewModel("Tarefa encontrada com sucesso!", true, task));
+            }
+            catch (DomainException ex)
+            {
+                return BadRequest(Responses.DomainErroMessage(ex.Message, ex.Errors));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, Responses.ApplicationErrorMessage(null));
+            }
+        }
+
+        [HttpPost("search")]
+        [ProducesResponseType(typeof(ResultViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultViewModel), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> Search([FromBody] FilterTaskViewModel model)
+        {
+            if (ModelState.IsValid is false)
+            {
+                return BadRequest(Responses.ApplicationErrorMessage("Parâmetros inválidos!"));
+            }
+
+            try
+            {
+                var tasks = await _taskService.GetAllTasksByFilter(new Core.DTOs.TaskFilterParamsDTO(DueDate: model.dueDate, Status: model.taskStatus));
+                if (tasks is null)
+                    return Ok(new ResultViewModel("Nenhuma tarefa foi encontrada!", false, null));
+                return Ok(new ResultViewModel("Tarefa(s) encontrada(s) com sucesso!", true, tasks));
+            }
+            catch (DomainException ex)
+            {
+                return BadRequest(Responses.DomainErroMessage(ex.Message, ex.Errors));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, Responses.ApplicationErrorMessage(null));
+            }
+
+        }
+        
         [HttpGet]
-        [ProducesResponseType(typeof(ResultViewModel), StatusCodes.Status200OK)]   
+        [ProducesResponseType(typeof(ResultViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultViewModel), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> GetAllAsync()
         {
-            var tasks = await _taskService.GetAllTasks();
+            try
+            {
+                var tasks = await _taskService.GetAllTasks();
+                if (tasks is null)
+                    return Ok(new ResultViewModel("Nenhuma tarefa foi encontrada!", false, null));
+                return Ok(new ResultViewModel("Tarefa(s) encontrada(s) com sucesso!", true, tasks));
+            }
+            catch (DomainException ex)
+            {
+                return BadRequest(Responses.DomainErroMessage(ex.Message, ex.Errors));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, Responses.ApplicationErrorMessage(null));
+            }
 
-            if (tasks is null)
-                return Ok(new ResultViewModel("Nenhuma tarefa foi encontrada!", false, null));
-
-            return Ok(new ResultViewModel ("Tarefa encontrado com sucesso!", true, tasks));
-
-        }
-
-        [HttpGet]
-        public async Task<IEnumerable<TaskDTO>> GetAllByDueDate([FromQuery] DateOnly dueDate)
-        {
-            return await _taskService.GetAllTasksByDueDate(dueDate);
-        }
-
-        [HttpGet]
-        public async Task<IEnumerable<TaskDTO>> GetAllByStatus([FromQuery] Domain.Enums.TaskStatus status)
-        {
-            return await _taskService.GetAllTasksByStatusAsync(status);
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(), StatusCodes.Status200OK)]
-        public ActionResult Post([FromBody] TaskDTO entity)
+        [ProducesResponseType(typeof(ResultViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultViewModel), StatusCodes.Status400BadRequest)]
+        public ActionResult Post([FromBody] CreateTaskViewModel model)
         {
-            if (entity is null)
+            if(ModelState.IsValid is false)
             {
-                return BadRequest("Task cannot be null.");
+                return BadRequest(Responses.ApplicationErrorMessage("Parâmetros inválidos!"));
             }
 
-            var task = _taskService.Create(entity);
-            if (task is not null)
-            {
-                return CreatedAtAction(nameof(GetAllAsync), new { id = task.Id }, task);
-            }
-
-            return BadRequest("Failed to create task.");
-        }
-
-        [HttpPut("{id}")]
-        public ActionResult Put(Guid id, [FromBody] TaskDTO entity)
-        {
-            if (entity is null)
-            {
-                return BadRequest("Task cannot be null.");
-            }
-            var task = _taskService.Update(entity);
-            if (task is not null)
-            {
-                return Ok(task);
-            }
-
-            return NotFound($"Task with ID {id} not found.");
-        }
-
-        // DELETE api/<TaskController>/5
-        [HttpDelete("{id}")]
-        public ActionResult Delete(Guid id)
-        {
-            if (id == Guid.Empty)
-            {
-                return BadRequest("Task cannot be null.");
-            }
             try
             {
-                _taskService.Remove(id);
+                var task = _taskService.Create(new TaskDTO(
+                Id: null,
+                Title: model.Title,
+                Description: model.Description,
+                CreatedAt: null,
+                DueDate: model.DueDate,
+                Status: null));
+
+                return Ok(Responses.SuccessMessage("Tarefa criada com sucesso!", task));
+
+            } catch (DomainException ex)
+            {
+                return BadRequest(Responses.DomainErroMessage(ex.Message, ex.Errors));
             }
             catch (Exception ex)
             {
-                // Log the exception (not implemented here)
-                throw new InvalidOperationException($"Failed to delete task with ID {id}.", ex);
+                return StatusCode(500, Responses.ApplicationErrorMessage(null));
             }
         }
 
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(ResultViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultViewModel), StatusCodes.Status400BadRequest)]
+        public ActionResult Put(Guid id, [FromBody] UpdateTaskViewModel model)
+        {
+            if (ModelState.IsValid is false)
+            {
+                return BadRequest(Responses.ApplicationErrorMessage("Parâmetros inválidos!"));
+            }
 
+            try
+            {
+                var task = _taskService.Update(new TaskDTO(
+                Id: id,
+                Title: model?.Title,
+                Description: model?.Description,
+                CreatedAt: null,
+                DueDate: model?.DueDate,
+                Status: model?.Status));
+
+                return Ok(Responses.SuccessMessage("Tarefa atualizada com sucesso!", task));
+
+            }
+            catch (DomainException ex)
+            {
+                return BadRequest(Responses.DomainErroMessage(ex.Message, ex.Errors));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, Responses.ApplicationErrorMessage(null));
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(ResultViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultViewModel), StatusCodes.Status400BadRequest)]
+        public ActionResult Delete(Guid id)
+        {
+            try
+            {
+                _taskService.Remove(id);
+                return Ok(Responses.SuccessMessage("Tarefa removida com sucesso!"));
+            }
+            catch (DomainException ex)
+            {
+                return BadRequest(Responses.DomainErroMessage(ex.Message, ex.Errors));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, Responses.ApplicationErrorMessage(null));
+            }
+        }        
     }
 }

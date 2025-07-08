@@ -26,6 +26,7 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+
 # .NET Core
 project.lock.json
 project.fragment.lock.json
@@ -44,6 +45,12 @@ ScaffoldingReadMe.txt
 *~
 CodeCoverage/
 
+# Visual Studio
+.vs/
+
+# Visual Studio Code
+.vscode/
+
 # MSBuild Binary and Structured Log
 *.binlog
 
@@ -55,3 +62,5 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Entity Framework Core Migrations

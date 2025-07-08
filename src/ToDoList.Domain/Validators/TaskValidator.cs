@@ -8,17 +8,21 @@ namespace ToDoList.Domain.Validators
         { 
             RuleFor(x => x.Title)
                 .NotEmpty().WithMessage("Title is required.")
-                .MaximumLength(200).WithMessage("Title must not exceed 100 characters.");
+                .MaximumLength(200)
+                .WithMessage("Title must not exceed 100 characters.");
 
             RuleFor(x => x.Description)
                 .NotEmpty().WithMessage("Description is required.")
-                .MaximumLength(500).WithMessage("Description must not exceed 500 characters.");
+                .MaximumLength(500)
+                .WithMessage("Description must not exceed 500 characters.");
 
             RuleFor(x => x.DueDate)
-                .GreaterThan(DateTime.Now).WithMessage("Due date must be in the future.");
+                .Must(dueDate => dueDate is null || dueDate > DateOnly.FromDateTime(DateTime.Today))
+                .WithMessage("Due date must be in the future.");
 
             RuleFor(x => x.Status)
-                .IsInEnum().WithMessage("Status must be a valid value.");
+                .IsInEnum()
+                .WithMessage("Status must be a valid value.");
         }
     }
 }

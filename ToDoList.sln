@@ -11,9 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Infra", "src\ToDoL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Tests", "src\ToDoList.Tests\ToDoList.Tests.csproj", "{79BB189E-A977-4171-A9A8-FFC2016C58C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.IoC", "src\ToDoList.IoC\ToDoList.IoC.csproj", "{8B470433-342B-4110-8987-56F772F3AF0B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Core", "ToDoList.Core\ToDoList.Core.csproj", "{F034DF0E-95EF-42E2-B2BB-1654AA614206}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Core", "src\ToDoList.Core\ToDoList.Core.csproj", "{F034DF0E-95EF-42E2-B2BB-1654AA614206}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +35,6 @@ Global
 		{79BB189E-A977-4171-A9A8-FFC2016C58C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79BB189E-A977-4171-A9A8-FFC2016C58C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79BB189E-A977-4171-A9A8-FFC2016C58C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8B470433-342B-4110-8987-56F772F3AF0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8B470433-342B-4110-8987-56F772F3AF0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8B470433-342B-4110-8987-56F772F3AF0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8B470433-342B-4110-8987-56F772F3AF0B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F034DF0E-95EF-42E2-B2BB-1654AA614206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F034DF0E-95EF-42E2-B2BB-1654AA614206}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F034DF0E-95EF-42E2-B2BB-1654AA614206}.Release|Any CPU.ActiveCfg = Release|Any CPU

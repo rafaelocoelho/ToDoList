@@ -1,16 +1,16 @@
+using ToDoList.Core;
 using ToDoList.Infra;
-using ToDoList.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Register application and infrastructure services
+// Register infrastructure
 builder.Services.Addinfra(builder.Configuration);
 
-// Register IoC container for dependency injection
-builder.Services.AddIoC();
+// Register services
+builder.Services.AddCore();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
